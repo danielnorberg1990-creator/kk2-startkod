@@ -82,12 +82,24 @@ class ShoppingList
     public void Load()
     {
         string text = File.ReadAllText(path);
-        string[] lines = text.Split('\n');
+        string[] lines = text.Split('\n', '\r');
 
         foreach (string line in lines)
         {
+                        if (line.Length == 0) // Controls for empty lines.
+            {
+                continue;
+            }
+
             string[] parts = line.Split(';');
+
+            if (parts.Length != 2) // Make sure that the program expects 2 inputs, item name and price.
+            {
+                continue;
+            }
+
             items.Add(new Item(parts[1], int.Parse(parts[0])));
         }
     }
 }
+
