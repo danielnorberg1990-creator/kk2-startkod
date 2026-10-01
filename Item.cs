@@ -2,9 +2,9 @@
 class Item
 {
     public string Name { get; set; }
-    public int Price { get; set; }
+    public double Price { get; set; }
 
-    public Item(string name, int price)
+    public Item(string name, double price)
     {
         Name = name;
         Price = price;
@@ -12,6 +12,6 @@ class Item
 
     public override string ToString()
     {
-        return $"{Name} - {Price} kr";
+        return $"{Name} - {Price:F2} kr";
     }
 }

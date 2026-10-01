@@ -21,11 +21,11 @@ class ShoppingList
     }
 
     // Adds up the price of every item on the list.
-    public int Total()
+    public double Total()
     {
-        int sum = 0;
+        double sum = 0;
 
-        for (int i = 1; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             sum += items[i].Price;
         }
@@ -54,7 +54,7 @@ class ShoppingList
             Console.WriteLine($"{i + 1}. {items[i]}");
         }
 
-        Console.WriteLine($"Totalt: {Total()} kr");
+        Console.WriteLine($"Totalt: {Total():F2} kr");
     }
 
     // Writes one item per line, as "price;name".
@@ -98,7 +98,7 @@ class ShoppingList
                 continue;
             }
 
-            items.Add(new Item(parts[1], int.Parse(parts[0])));
+            items.Add(new Item(parts[1], double.Parse(parts[0])));
         }
     }
 }

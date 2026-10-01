@@ -15,15 +15,46 @@ while (true)
 
     int choice = int.Parse(Console.ReadLine());
 
-    if (choice == 1)
+double price = 0;
+bool valid = false;
+
+while (choice == 1 && !valid)
+{
+    Console.Write("Namn: ");
+    string name = Console.ReadLine() ?? string.Empty;
+
+    if (string.IsNullOrWhiteSpace(name))
     {
-        Console.Write("Namn: ");
-        string name = Console.ReadLine();
-        Console.Write("Pris: ");
-        int price = int.Parse(Console.ReadLine());
-        list.Add(new Item(name, price));
+        Console.WriteLine("Namnet får inte vara tomt.");
+        continue;
     }
-    else if (choice == 2)
+
+    if (name.Length < 3)
+    {
+        Console.WriteLine("Namnet måste vara minst 3 tecken långt.");
+        continue;
+    }
+
+    Console.Write("Pris: ");
+    string input = Console.ReadLine() ?? string.Empty;
+
+    if (string.IsNullOrWhiteSpace(input))
+    {
+        Console.WriteLine("Priset får inte vara tomt.");
+        continue;
+    }
+
+    if (!double.TryParse(input, out price))
+    {
+        Console.WriteLine("Priset måste vara ett tal.");
+        continue;
+    }
+
+    list.Add(new Item(name, price));
+    valid = true;
+}
+
+    if (choice == 2)
     {
         Console.Write("Nummer: ");
         int number = int.Parse(Console.ReadLine());

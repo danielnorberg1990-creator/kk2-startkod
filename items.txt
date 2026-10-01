@@ -1,3 +1,4 @@
 15;Mjölk
 32;Bröd
 89;Ost
+15,5;Kaffe
