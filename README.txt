@@ -45,7 +45,7 @@
     at System.Int32.Parse(String s)
     at Program.<Main>$(String[] args) in C:\Gitrepos\kk2-startkod\Program.cs:line 16"
 
-    //Lagt till int.TryParse istället för int.Parse i huvudmenyn. Om inmatningen inte är ett tal mellan 1 och 5 visas felmeddelandet "Ogiltigt val. Välj ett nummer mellan 1 och 5." och programmet frågar igen i stället för att krascha.
+//Lagt till int.TryParse istället för int.Parse i huvudmenyn. Om inmatningen inte är ett tal mellan 1 och 5 visas felmeddelandet "Ogiltigt val. Välj ett nummer mellan 1 och 5." och programmet frågar igen i stället för att krascha.
 
 --------------------------------
 
@@ -58,20 +58,20 @@
     at ShoppingList.Load() in C:\Gitrepos\kk2-startkod\ShoppingList.cs:line 84
     at Program.<Main>$(String[] args) in C:\Gitrepos\kk2-startkod\Program.cs:line 2"
 
-    //Lagt till en kontroll med File.Exists i Load innan filen läses. Om filen inte finns startar programmet med en tom lista i stället för att krascha.
+//Lagt till en kontroll med if File.Exists i Load innan filen läses. Om filen inte finns startar programmet med en tom lista i stället för att krascha.
 
 --------------------------------
 
     6. Menyval 4 (sök vara) hittade inte varan om bokstavstorleken inte stämde exakt. Sökte man på "ost" fick man meddelandet "Varan finns inte i listan." trots att "Ost" fanns i listan.
 
-    //Ändrat jämförelsen i Find från == till string.Equals med StringComparison.OrdinalIgnoreCase. Sökningen blir nu oberoende av små och stora bokstäver, "ost", "Ost" och "OST" hittar alla varan "Ost".
+//Ändrat jämförelsen i Find från == till string.Equals med StringComparison.OrdinalIgnoreCase. Sökningen blir nu oberoende av små och stora bokstäver, "ost", "Ost" och "OST" hittar alla varan "Ost".
 
 --------------------------------
 
     7. I Save fanns en tom catch som fångade alla fel utan att visa något, och "Listan är sparad." skrevs ut oavsett om sparandet lyckades. Testades genom att göra items.txt skrivskyddad: programmet sa "Listan är sparad." men ingen data skrevs till filen.
 
-    //"Listan är sparad." flyttades in i try-blocket så att den endast visas när sparandet lyckats. Den tomma catch ersattes med specifika catchar för IOException och UnauthorizedAccessException som skriver ut ett felmeddelande när sparandet misslyckas.
-    //I .NET 10 är UnauthorizedAccessException inte längre en underklass till IOException (undantaget har flyttats till System-namespace), därför krävs två separata catchar för att fånga båda fallen.
+//"Listan är sparad." flyttades in i try-blocket så att den endast visas när sparandet lyckats. Den tomma catch ersattes med specifika catchar för IOException och UnauthorizedAccessException som skriver ut ett felmeddelande när sparandet misslyckas.
+//I .NET 10 är UnauthorizedAccessException inte längre en underklass till IOException (undantaget har flyttats till System-namespace), därför krävs två separata catchar för att fånga båda fallen.
 
 --------------------------------
 
@@ -81,8 +81,8 @@
 1. Budgettaket — hur Add säger nej.
 
    Add returnerar bool i stället för att kasta ett undantag. Den returnerar true om varan lades
-   till och false om varan skulle göra att totalbeloppet blir högre än taket (MaxTotal = 1000 kr).
-   I det senare fallet läggs alltså varan inte till.
+   till och false om varan skulle göra att totalbeloppet blir högre än taket (MaxTotal = 1000 kr) i detta fall.
+   Om taket överskrids, läggs alltså varan inte till.
 
    //public bool Add(Item item)
    //{
