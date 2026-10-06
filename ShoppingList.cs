@@ -3,6 +3,7 @@ class ShoppingList
 {
     private List<Item> items = new List<Item>();
     private string path;
+    private const double MaxTotal = 1000;
 
     public ShoppingList(string path)
     {
@@ -39,6 +40,18 @@ class ShoppingList
         return sum;
     }
 
+    // True if an item with this price can be added without exceeding the budget.
+    public bool CanAdd(double price)
+    {
+        return Total() + price <= MaxTotal;
+    }
+
+    // How much is left before the budget is reached.
+    public double Remaining()
+    {
+        return MaxTotal - Total();
+    }
+
     // Looks up an item by its name. Returns null if there is no such item.
     public Item Find(string name)
     {
@@ -60,7 +73,7 @@ class ShoppingList
             Console.WriteLine($"{i + 1}. {items[i]}");
         }
 
-        Console.WriteLine($"Totalt: {Total():F2} kr");
+        Console.WriteLine($"Totalt: {Total():F2} kr (kvar till maxbeloppet: {Remaining():F2} kr)");
     }
 
     // Writes one item per line, as "price;name".

@@ -56,6 +56,12 @@ while (choice == 1 && !valid)
         continue;
     }
 
+    if (!list.CanAdd(price))
+    {
+        Console.WriteLine("Du har nått max budget, ta bort någon vara om du vill handla mer.");
+        continue;
+    }
+
     list.Add(new Item(name, price));
     valid = true;
 }
