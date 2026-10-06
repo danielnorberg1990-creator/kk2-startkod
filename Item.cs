@@ -23,6 +23,7 @@ class Item
         Price = price;
     }
 
+    // How the item is shown: "name - price kr".
     public override string ToString()
     {
         return $"{Name} - {Price} kr";
