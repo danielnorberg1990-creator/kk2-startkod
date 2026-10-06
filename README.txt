@@ -117,6 +117,34 @@
    namn och pris redan när användaren skriver in dem, så undantagen i Item fungerar som ett
    skyddsnät för fall där ett ogiltigt Item ändå försöker skapas.
 
+3. Stängning av inmatning (Ctrl+Z / EOF).
+
+   Om inmatningströmmen slutar — till exempel om man trycker Ctrl+Z i konsolen —
+   returnerar Console.ReadLine() null. Matades det null-värdet in i en loop kunde
+   programmet hamna i en oändlig loop.
+
+   //string ReadLineOrExit()
+   //{
+   //    string line = Console.ReadLine();
+   //    if (line == null)
+   //    {
+   //        Environment.Exit(0);
+   //    }
+   //    return line;
+   //}
+
+   Alla konsolinläsningar i Program.cs går nu genom ReadLineOrExit(). När
+   inmatningen är slut avslutar programmet städat med Environment.Exit(0) i
+   stället för att loopa för evigt.
+
+4. Load tolererar trasiga rader i items.txt.
+
+   Om filen innehåller en rad som skulle skapa ett ogiltigt Item — negativt pris,
+   NaN/infinity eller tomt namn — hoppas raden över i Load i stället för att
+   programmet kraschar. Dessutom kontrolleras i Program.cs att priset är ändligt
+   (double.IsFinite) innan ett Item skapas, så att t.ex. "infinity" eller "NaN"
+   inte kan slinka in som pris.
+
 --------------------------------
 
 **Klassdiagram:**
