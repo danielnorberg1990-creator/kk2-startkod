@@ -9,12 +9,12 @@ class Item
     // the constructor throws if the values are invalid.
     public Item(string name, double price)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name)) // Check for null, empty, or whitespace-only string
         {
             throw new ArgumentException("Namnet får inte vara tomt.", nameof(name));
         }
 
-        if (price < 0)
+        if (price < 0) // Check for negative price
         {
             throw new ArgumentOutOfRangeException(nameof(price), price, "Priset får inte vara negativt.");
         }
