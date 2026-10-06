@@ -44,7 +44,7 @@ class ShoppingList
     {
         foreach (Item item in items)
         {
-            if (item.Name == name)
+            if (string.Equals(item.Name, name, StringComparison.OrdinalIgnoreCase))
             {
                 return item;
             }
