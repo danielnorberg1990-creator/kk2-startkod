@@ -12,8 +12,14 @@ while (true)
     Console.WriteLine("4. Sök vara");
     Console.WriteLine("5. Avsluta");
     Console.Write("Välj: ");
+    string choiceInput = Console.ReadLine() ?? string.Empty;
+    int choice;
 
-    int choice = int.Parse(Console.ReadLine());
+    while (!int.TryParse(choiceInput, out choice) || choice < 1 || choice > 5)
+    {
+        Console.WriteLine("Ogiltigt val. Välj ett nummer mellan 1 och 5.");
+        choiceInput = Console.ReadLine() ?? string.Empty;
+    }
 
 double price = 0;
 bool valid = false;
@@ -107,7 +113,7 @@ while (choice == 1 && !valid)
     else if (choice == 4)
     {
         Console.Write("Namn att söka efter: ");
-        string wanted = Console.ReadLine();
+        string wanted = Console.ReadLine() ?? string.Empty;
         Item found = list.Find(wanted);
 
         if (found == null)

@@ -89,12 +89,16 @@ class ShoppingList
         try
         {
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
+            Console.WriteLine("Listan är sparad.");
         }
-        catch
+        catch (IOException ex)
         {
+            Console.WriteLine($"Kunde inte spara listan: {ex.Message}");
         }
-
-        Console.WriteLine("Listan är sparad.");
+        catch (UnauthorizedAccessException ex)
+        {
+            Console.WriteLine($"Kunde inte spara listan (filen är skrivskyddad): {ex.Message}");
+        }
     }
 
     // Reads the file back into the list.
@@ -123,7 +127,10 @@ class ShoppingList
                 continue;
             }
 
-            items.Add(new Item(parts[1], double.Parse(parts[0])));
+            if (double.TryParse(parts[0], out double price))
+            {
+                items.Add(new Item(parts[1], price));
+            }
         }
     }
 }
