@@ -7,7 +7,7 @@
    at ShoppingList.Load() in C:\Gitrepos\kk2-startkod\ShoppingList.cs:line 90
    at Program.<Main>$(String[] args) in C:\Gitrepos\kk2-startkod\Program.cs:line 2"
 
-  // Det kan härledas till Load funktionen i ShoppingList.cs. Fick lägga till \r då filerna sparar med \n & \r.
+// Det kan härledas till Load funktionen i ShoppingList.cs. Fick lägga till \r då filerna sparar med \n & \r.
 //"string[] lines = text.Split('\n', '\r');". Detta lagar problemet med att man inte kunde se item name utan endast priset, tidigare.
    
 --------------------------------
@@ -22,7 +22,7 @@
    at Program.<Main>$(String[] args) in C:\Gitrepos\kk2-startkod\Program.cs:line 23"
 
 //Lagt till felhantering gällande pris och namn, fältet får inte vara tomt eller felaktig (bokstav där siffra förväntas).
-//Lagt till hantering att namnet på produkten behöver vara minst 3 tecken långt.
+//Lagt till hantering att namnet på produkten behöver vara minst 2 tecken långt.
 //Lagt till funktion så att decimaler kan skrivas och även rundas av till 2 decimaler.
    
 --------------------------------
@@ -33,5 +33,7 @@
    at ShoppingList.RemoveAt(Int32 number) in C:\Gitrepos\kk2-startkod\ShoppingList.cs:line 20
    at Program.<Main>$(String[] args) in C:\Gitrepos\kk2-startkod\Program.cs:line 61
 
-      
+//Lagt till hantering för att man inte ska kunna skriva tal utanför listan när man tar bort varat från menyval 2.
+//Man kan inte skriva bokstäver där siffra förväntas.      
 --------------------------------
+

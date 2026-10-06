@@ -30,9 +30,9 @@ while (choice == 1 && !valid)
         continue;
     }
 
-    if (name.Length < 3)
+    if (name.Length < 2)
     {
-        Console.WriteLine("Namnet måste vara minst 3 tecken långt.");
+        Console.WriteLine("Namnet måste vara minst 2 tecken långt.");
         continue;
     }
 
@@ -50,6 +50,11 @@ while (choice == 1 && !valid)
         Console.WriteLine("Priset måste vara ett tal.");
         continue;
     }
+    if (price < 0)
+    {
+        Console.WriteLine("Priset får inte vara negativt.");
+        continue;
+    }
 
     list.Add(new Item(name, price));
     valid = true;
@@ -65,6 +70,7 @@ while (choice == 1 && !valid)
     {
         bool removed = false;
 
+        //Felhantering för att ta bort en vara från listan. Användaren måste ange ett giltigt nummer.
         while (!removed)
         {
             Console.Write("Nummer: ");
@@ -72,7 +78,7 @@ while (choice == 1 && !valid)
 
             if (!int.TryParse(numberInput, out int number))
             {
-                Console.WriteLine("Numret måste vara en utav siffrorna presenterade bredvid varan.");
+                Console.WriteLine("Numret måste vara en utav siffrorna presenterad bredvid varan.");
                 continue;
             }
 
