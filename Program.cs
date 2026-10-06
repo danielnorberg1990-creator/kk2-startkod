@@ -18,6 +18,7 @@ while (true)
 double price = 0;
 bool valid = false;
 
+
 while (choice == 1 && !valid)
 {
     Console.Write("Namn: ");
@@ -55,11 +56,38 @@ while (choice == 1 && !valid)
 }
 
     if (choice == 2)
+{
+    if (list.Count() == 0)
     {
-        Console.Write("Nummer: ");
-        int number = int.Parse(Console.ReadLine());
-        list.RemoveAt(number);
+        Console.WriteLine("Listan är tom. Inget att ta bort.");
     }
+    else
+    {
+        bool removed = false;
+
+        while (!removed)
+        {
+            Console.Write("Nummer: ");
+            string numberInput = Console.ReadLine() ?? string.Empty;
+
+            if (!int.TryParse(numberInput, out int number))
+            {
+                Console.WriteLine("Numret måste vara en utav siffrorna presenterade bredvid varan.");
+                continue;
+            }
+
+            if (number < 1 || number > list.Count())
+            {
+                Console.WriteLine($"Ogiltigt nummer. Välj ett nummer mellan 1 och {list.Count()}.");
+                continue;
+            }
+
+            list.RemoveAt(number);
+            removed = true;
+        }
+    }
+}
+
     else if (choice == 3)
     {
         list.Save();

@@ -14,6 +14,12 @@ class ShoppingList
         items.Add(item);
     }
 
+      // Returns the number of items in the list.
+    public int Count()
+    {
+    return items.Count;
+    }
+
     // Removes the item the user sees as number 1, 2, 3 ...
     public void RemoveAt(int number)
     {
