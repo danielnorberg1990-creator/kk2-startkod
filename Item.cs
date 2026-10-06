@@ -12,6 +12,6 @@ class Item
 
     public override string ToString()
     {
-        return $"{Name} - {Price:F2} kr";
+        return $"{Name} - {Price} kr";
     }
 }
