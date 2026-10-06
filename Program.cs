@@ -1,3 +1,17 @@
+// Reads a line of input. If the input stream has ended (for example Ctrl+Z in a console),
+// there is nothing left to read, so the program exits cleanly instead of looping forever.
+string ReadLineOrExit()
+{
+    string line = Console.ReadLine();
+
+    if (line == null)
+    {
+        Environment.Exit(0);
+    }
+
+    return line;
+}
+
 ShoppingList list = new ShoppingList("items.txt");
 list.Load();
 
@@ -12,13 +26,13 @@ while (true)
     Console.WriteLine("4. Sök vara");
     Console.WriteLine("5. Avsluta");
     Console.Write("Välj: ");
-    string choiceInput = Console.ReadLine() ?? string.Empty;
+    string choiceInput = ReadLineOrExit();
     int choice;
 
     while (!int.TryParse(choiceInput, out choice) || choice < 1 || choice > 5)
     {
         Console.WriteLine("Ogiltigt val. Välj ett nummer mellan 1 och 5.");
-        choiceInput = Console.ReadLine() ?? string.Empty;
+        choiceInput = ReadLineOrExit();
     }
 
 double price = 0;
@@ -28,7 +42,7 @@ bool valid = false;
 while (choice == 1 && !valid)
 {
     Console.Write("Namn: ");
-    string name = Console.ReadLine() ?? string.Empty;
+    string name = ReadLineOrExit();
 
     if (string.IsNullOrWhiteSpace(name))
     {
@@ -43,7 +57,7 @@ while (choice == 1 && !valid)
     }
 
     Console.Write("Pris: ");
-    string input = Console.ReadLine() ?? string.Empty;
+    string input = ReadLineOrExit();
 
     if (string.IsNullOrWhiteSpace(input))
     {
@@ -62,13 +76,36 @@ while (choice == 1 && !valid)
         continue;
     }
 
-    if (!list.CanAdd(price))
+    if (!double.IsFinite(price))
+    {
+        Console.WriteLine("Priset måste vara ett tal på ett korrekt format.");
+        continue;
+    }
+
+    Item newItem;
+
+    // The Item constructor can throw if the values are invalid. Handle it so the program never crashes.
+    try
+    {
+        newItem = new Item(name, price);
+    }
+    catch (ArgumentOutOfRangeException ex)
+    {
+        Console.WriteLine($"{ex.Message}");
+        continue;
+    }
+    catch (ArgumentException ex)
+    {
+        Console.WriteLine($"{ex.Message}");
+        continue;
+    }
+
+    if (!list.Add(newItem))
     {
         Console.WriteLine("Du har nått max budget, ta bort någon vara om du vill handla mer.");
         continue;
     }
 
-    list.Add(new Item(name, price));
     valid = true;
 }
 
@@ -86,7 +123,7 @@ while (choice == 1 && !valid)
         while (!removed)
         {
             Console.Write("Nummer: ");
-            string numberInput = Console.ReadLine() ?? string.Empty;
+            string numberInput = ReadLineOrExit();
 
             if (!int.TryParse(numberInput, out int number))
             {
@@ -113,7 +150,7 @@ while (choice == 1 && !valid)
     else if (choice == 4)
     {
         Console.Write("Namn att söka efter: ");
-        string wanted = Console.ReadLine() ?? string.Empty;
+        string wanted = ReadLineOrExit();
         Item found = list.Find(wanted);
 
         if (found == null)

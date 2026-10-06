@@ -74,3 +74,65 @@
     //I .NET 10 är UnauthorizedAccessException inte längre en underklass till IOException (undantaget har flyttats till System-namespace), därför krävs två separata catchar för att fånga båda fallen.
 
 --------------------------------
+
+**Designval:**
+==================
+
+1. Budgettaket — hur Add säger nej.
+
+   Add returnerar bool i stället för att kasta ett undantag. Den returnerar true om varan lades
+   till och false om varan skulle göra att totalbeloppet blir högre än taket (MaxTotal = 1000 kr).
+   I det senare fallet läggs alltså varan inte till.
+
+   //public bool Add(Item item)
+   //{
+   //    if (Total() + item.Price > MaxTotal) return false;
+   //    items.Add(item);
+   //    return true;
+   //}
+
+   Varför returvärdet i stället för undantag: att stöta på budgettaket är en förväntad situation.
+   Användaren kan helt enkelt vilja köpa något som tillsammans med resten av listan blir för dyrt —
+   det är inget fel i programmet och inget onormalt tillstånd. Undantag passar bäst för oväntade
+   tillstånd; för en förväntad situation räcker ett returvärde. Det följer exemplet från kursen
+   där ett bankuttag returnerar false när saldot inte räcker i stället för att kasta undantag.
+
+   Vad Program.cs gör med svaret: det kontrollerar returvärdet. Om Add returnerar false skrivs
+   "Du har nått max budget, ta bort någon vara om du vill handla mer." och programmet frågar
+   användaren igen i stället för att krascha. Eftersom taket sitter i ShoppingList — inte bara i
+   menyn — kan ingen kod som kallar Add lägga till en vara som spränger taket.
+
+2. Item skyddar sig själv.
+
+   Konstruktorn vägrar skapa ett trasigt objekt och kastar i stället:
+   - ArgumentException om namnet är tomt eller bara mellanslag.
+   - ArgumentOutOfRangeException om priset är negativt.
+
+   Egenskaperna Name och Price är skrivskyddade (endast get), så ett Item inte kan ändras till
+   ett ogiltigt tillstånd efter skapandet.
+
+   Program.cs fångar undantagen runt konstruktionen (catch för ArgumentOutOfRangeException före
+   catch för ArgumentException, eftersom ArgumentOutOfRangeException ärver från ArgumentException)
+   och visar meddelandet för användaren, så programmet kraschar inte. Menyn förvaliderar dessutom
+   namn och pris redan när användaren skriver in dem, så undantagen i Item fungerar som ett
+   skyddsnät för fall där ett ogiltigt Item ändå försöker skapas.
+
+--------------------------------
+
+**Klassdiagram:**
+==================
+
++------------------+                      +---------------------------+                      +----------------------+
+| Program          | -> anropar --------->| ShoppingList              | -> innehåller ------>| Item                 |
+| - Main()         |                      | - items: List<Item>       |                      | - Name: string       |
++------------------+                      | - path: string            |                      | - Price: double      |
+                                          | - MaxTotal: double        |                      | + Item(name, price)  |
+                                          | + Add(item): bool         |                      | + ToString(): string |
+                                          | + RemoveAt(number)        |                      +----------------------+
+                                          | + Find(name): Item        |
+                                          | + Total(): double         |
+                                          | + Remaining(): double     |
+                                          | + Print()                 |
+                                          | + Save()                  |
+                                          | + Load()                  |
+                                          +---------------------------+

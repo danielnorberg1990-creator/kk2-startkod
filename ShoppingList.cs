@@ -10,9 +10,17 @@ class ShoppingList
         this.path = path;
     }
 
-    public void Add(Item item)
+    // Adds the item unless it would push the total past the budget cap.
+    // Returns true if the item was added, false if the budget would be exceeded.
+    public bool Add(Item item)
     {
+        if (Total() + item.Price > MaxTotal)
+        {
+            return false;
+        }
+
         items.Add(item);
+        return true;
     }
 
       // Returns the number of items in the list.
@@ -38,12 +46,6 @@ class ShoppingList
         }
 
         return sum;
-    }
-
-    // True if an item with this price can be added without exceeding the budget.
-    public bool CanAdd(double price)
-    {
-        return Total() + price <= MaxTotal;
     }
 
     // How much is left before the budget is reached.
@@ -127,10 +129,18 @@ class ShoppingList
                 continue;
             }
 
-            if (double.TryParse(parts[0], out double price))
+            if (!double.TryParse(parts[0], out double price))
             {
-                items.Add(new Item(parts[1], price));
+                continue;
             }
+
+            // Skip lines that would create an invalid item (negative, NaN or empty name).
+            if (price < 0 || !double.IsFinite(price) || parts[1].Length == 0)
+            {
+                continue;
+            }
+
+            items.Add(new Item(parts[1], price));
         }
     }
 }
